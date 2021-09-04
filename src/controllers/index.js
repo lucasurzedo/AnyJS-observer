@@ -14,9 +14,9 @@ async function notifyExecution(req, res, next) {
 		console.log(`Set timeout to ${timeout}`);
 		res.setTimeout(parseInt(timeout, 10)*1000, () => {
 			console.log('Request has timed out');
-				jsonResult.result = "request has timed out"
-				jsonResult.status = 408;
-				res.send(jsonResult);
+			jsonResult.result = "request has timed out"
+			jsonResult.status = 408;
+			res.send(jsonResult);
 		});
 	}
 
