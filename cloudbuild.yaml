@@ -13,5 +13,8 @@ steps:
       - 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest'
     id: Push
 
+options:
+  substitutionOption: ALLOW_LOOSE
+
 images:
   - 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest'
