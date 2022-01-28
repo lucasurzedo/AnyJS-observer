@@ -1,7 +1,8 @@
 steps:
   - name: gcr.io/cloud-builders/docker
     args:
-      - build 
+      - build
+      - '--no-cache'
       - '-t'
       - 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:$COMMIT_SHA .'
       - '.'
