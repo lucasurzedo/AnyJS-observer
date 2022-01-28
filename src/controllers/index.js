@@ -115,7 +115,6 @@ async function notifyCollection(req, res) {
         jsonResult.document = data.fullDocument;
       }
 
-
       try {
         res.send(jsonResult);
       } catch (err) {
