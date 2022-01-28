@@ -1,9 +1,9 @@
-'use strict';
-
 const express = require('express');
-const router = express.Router();
-const { notifyExecution } = require('../controllers');
 
-router.get('/execute/task/:taskName/execution/:executionName/notification', notifyExecution);
+const router = express.Router();
+const { notifyDocument, notifyCollection } = require('../controllers');
+
+router.get('/:service/:collectionName/:documentName/notification', notifyDocument);
+router.get('/:service/:collectionName/notification', notifyCollection);
 
 module.exports = router;
