@@ -8,7 +8,7 @@ steps:
       - '.'
     id: Build
   - name: gcr.io/cloud-builders/docker
-    args: ['$_PUSH', 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest']
+    args: ['$_PUSH, 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest']
     id: Push
 
 options:
