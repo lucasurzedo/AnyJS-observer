@@ -4,13 +4,11 @@ steps:
       - build
       - '--no-cache'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest'
+      - 'gcr.io/$PROJECT_ID/github.com/$_REPO_OWNER/anyjs-observer:latest'
       - '.'
     id: Build
   - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest'
+    args: [$_PUSH, 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest']
     id: Push
 
 options:
@@ -18,3 +16,7 @@ options:
 
 images:
   - 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest'
+
+substitutions:
+  _REPO_OWNER: lucasurzedo
+  _PUSH: push
