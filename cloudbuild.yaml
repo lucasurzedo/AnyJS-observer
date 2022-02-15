@@ -3,6 +3,7 @@ steps:
   name: gcr.io/cloud-builders/gcloud
   entrypoint: /bin/bash
   args: [ '-c', "gcloud secrets versions access latest --secret=secret-test > teste.txt" ]
+
 - id: sett-secrets-teste
   name: gcr.io/cloud-builders/gcloud
   entrypoint: '/bin/bash'
