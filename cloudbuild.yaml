@@ -18,4 +18,3 @@ images:
 substitutions:
   _REPO_OWNER: lucas
   _PUSH: push
-
