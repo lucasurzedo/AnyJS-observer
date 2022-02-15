@@ -1,13 +1,26 @@
 steps:
-- id: get-secrets-teste
-  name: gcr.io/cloud-builders/gcloud
-  entrypoint: /bin/bash
-  args: [ '-c', "gcloud secrets versions access latest --secret=secret-test > teste.txt" ]
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '--no-cache'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/github.com/$_REPO_OWNERurzedo/anyjs-observer:latest'
+      - '.'
+    id: Build
 
-- id: sett-secrets-teste
-  name: gcr.io/cloud-builders/gcloud
-  entrypoint: '/bin/bash'
-  args: [ '-c', "gcloud secrets create secret-test-1 --data-file=teste.txt" ]
+  - name: gcr.io/cloud-builders/docker
+    args: [$_PUSH, 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest']
+    id: Push
+
+  - id: get-secrets-teste
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: /bin/bash
+    args: [ '-c', "gcloud secrets versions access latest --secret=secret-test > teste.txt" ]
+
+  - id: set-secrets-teste
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: '/bin/bash'
+    args: [ '-c', "gcloud secrets create secret-test-2 --data-file=teste.txt" ]
 
 options:
   substitutionOption: ALLOW_LOOSE
@@ -18,3 +31,4 @@ images:
 substitutions:
   _REPO_OWNER: lucas
   _PUSH: push
+  
