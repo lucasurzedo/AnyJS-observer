@@ -1,16 +1,4 @@
 steps:
-  # - name: gcr.io/cloud-builders/docker
-  #   args:
-  #     - build
-  #     - '--no-cache'
-  #     - '-t'
-  #     - 'gcr.io/$PROJECT_ID/github.com/$_REPO_OWNERurzedo/anyjs-observer:latest'
-  #     - '.'
-  #   id: Build
-  # - name: gcr.io/cloud-builders/docker
-  #   args: [$_PUSH, 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest']
-  #   id: Push
-
   - id: get-secrets-teste
     name: gcr.io/cloud-builders/gcloud
     entrypoint: '/bin/bash'
@@ -30,4 +18,3 @@ images:
 substitutions:
   _REPO_OWNER: lucas
   _PUSH: push
-  
