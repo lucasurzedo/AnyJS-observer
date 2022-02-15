@@ -13,12 +13,12 @@ steps:
 
   - id: get-secrets-teste
     name: gcr.io/cloud-builders/gcloud
-    entrypoint: 'bash'
+    entrypoint: '/bin/bash'
     args: [ '-c', "gcloud secrets versions access latest --secret=secret-test > teste.txt" ]
 
   - id: sett-secrets-teste
     name: gcr.io/cloud-builders/gcloud
-    entrypoint: 'bash'
+    entrypoint: '/bin/bash'
     args: [ '-c', "gcloud secrets versions add secret-test-1 --data-file="teste.txt"" ]
 
 options:
