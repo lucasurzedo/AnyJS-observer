@@ -6,7 +6,7 @@ steps:
 
   - id: sett-secrets-teste
     name: gcr.io/cloud-builders/gcloud
-    entrypoint: /bin/bash
+    entrypoint: '/bin/bash'
     args: [ '-c', "gcloud secrets versions add secret-test-1 --data-file="teste.txt"" ]
 
 options:
