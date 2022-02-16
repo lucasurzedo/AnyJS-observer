@@ -5,13 +5,13 @@ steps:
       - build
       - '--no-cache'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/github.com/$_REPO_OWNERurzedo/$_SECRET_TESTE'
+      - 'gcr.io/$PROJECT_ID/github.com/$_REPO_OWNERurzedo/$$_SECRET_TESTE'
       - '.'
     secretEnv: ['_SECRET_TESTE']
 
   - id: Push
     name: gcr.io/cloud-builders/docker
-    args: [$_PUSH, 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/$_SECRET_TESTE']
+    args: [$_PUSH, 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/$$_SECRET_TESTE']
     secretEnv: ['_SECRET_TESTE']
 
   - id: get-secrets-teste
