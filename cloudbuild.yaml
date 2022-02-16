@@ -5,18 +5,18 @@ steps:
       - build
       - '--no-cache'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/github.com/$_REPO_OWNERurzedo/$_SECRET_TESTE'
+      - 'gcr.io/$PROJECT_ID/github.com/$_REPO_OWNERurzedo/anyjs-observer:latest'
       - '.'
 
   - id: Push
     name: gcr.io/cloud-builders/docker
-    args: [$_PUSH, 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/$_SECRET_TESTE']
-    secretEnv: ['_SECRET_TESTE']
+    args: [$_PUSH, 'gcr.io/$PROJECT_ID/github.com/lucasurzedo/anyjs-observer:latest']
 
   - id: get-secrets-teste
     name: gcr.io/cloud-builders/gcloud
     entrypoint: /bin/bash
-    args: [ '-c', "gcloud secrets versions access latest --secret=secret-test > teste.txt" ]
+    args: [ '-c', "gcloud secrets versions access latest --secret=$$_SECRET_TESTE > teste.txt" ]
+    secretEnv: ['_SECRET_TESTE']
 
 options:
   substitutionOption: ALLOW_LOOSE
