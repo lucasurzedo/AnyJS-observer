@@ -7,7 +7,6 @@ steps:
       - '-t'
       - 'gcr.io/$PROJECT_ID/github.com/$_REPO_OWNERurzedo/$_SECRET_TESTE'
       - '.'
-    secretEnv: ['_SECRET_TESTE']
 
   - id: Push
     name: gcr.io/cloud-builders/docker
