@@ -31,5 +31,5 @@ substitutions:
   
 availableSecrets:
   secretManager:
-  - versionName: projects/1061558947426/secrets/secret-test/versions/1
+  - versionName: projects/1061558947426/secrets/secret-test/versions/2
     env: '_SECRET_TESTE'
