@@ -20,7 +20,7 @@ steps:
   - id: create-secret-test
     name: gcr.io/cloud-builders/gcloud
     entrypoint: /bin/bash
-    args: ['-c', "gcloud secrets create $$_SECRET_TESTE --data-file=teste.txt"]
+    args: ['-c', "gcloud secrets create $_SECRET_TESTE --data-file=teste.txt"]
     secretEnv: ['_SECRET_TESTE']
 
 # options:
