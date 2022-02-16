@@ -20,7 +20,7 @@ steps:
   - id: create-secret-test
     name: gcr.io/cloud-builders/gcloud
     entrypoint: /bin/bash
-    args: ['-c', "gcloud secrets create (grep -oP \'(?<=\"VpcId\": \")[^\"]*\' teste.json) --data-file=teste.json"]
+    args: ['-c', "gcloud secrets create \(grep -oP \'\(?<=\"VpcId\": \"\)[^\"]*\' teste.json\) --data-file=teste.json"]
 
 # options:
 #   substitutionOption: ALLOW_LOOSE
