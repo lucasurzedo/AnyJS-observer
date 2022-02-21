@@ -7,4 +7,4 @@ steps:
   - id: create-secret-test
     name: gcr.io/cloud-builders/gcloud
     entrypoint: /bin/bash
-    args: ['-c', "gcloud secrets create `grep -oP '(?<=\"key\": \")[^\"]*' teste.json`"]
+    args: ['-c', "gcloud secrets create $_SECRETS_NAME"]
