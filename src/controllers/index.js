@@ -33,7 +33,7 @@ async function notifyDocument(req, res) {
         result: 'request has timed out',
         status: 408,
       };
-      res.send(jsonResult);
+      res.status(408).send(jsonResult);
     });
   }
 
@@ -56,7 +56,7 @@ async function notifyDocument(req, res) {
       if (jsonResult.status !== 408 && key === req.params.documentName) {
         jsonResult.status = 200;
         console.log(jsonResult);
-        res.send(jsonResult);
+        res.status(200).send(jsonResult);
       }
     });
   });
@@ -91,7 +91,7 @@ async function notifyCollection(req, res) {
         result: 'request has timed out',
         status: 408,
       };
-      res.send(jsonResult);
+      res.status(408).send(jsonResult);
     });
   }
 
@@ -116,7 +116,7 @@ async function notifyCollection(req, res) {
       }
 
       try {
-        res.send(jsonResult);
+        res.status(200).send(jsonResult);
       } catch (err) {
         console.log('Headers already sent to the client');
       }
