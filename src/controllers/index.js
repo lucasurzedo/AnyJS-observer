@@ -71,13 +71,13 @@ async function notifyCollection(req, res) {
     collectionName = (`${req.params.collectionName}_task`).toLowerCase();
     Model = mongoose.model(collectionName, ModelTask, collectionName);
     jsonResult = {
-      uri: `${req.baseUrl}/execute/task/${req.params.collectionName}`.toLowerCase(),
+      uri: `${req.baseUrl}/task/${req.params.collectionName}`.toLowerCase(),
     };
   } else if (req.params.service === 'object') {
     collectionName = (`${req.params.collectionName}_object`).toLowerCase();
     Model = mongoose.model(collectionName, ModelObject, collectionName);
     jsonResult = {
-      uri: `${req.baseUrl}/store/object/${req.params.collectionName}`.toLowerCase(),
+      uri: `${req.baseUrl}/storage/object/${req.params.collectionName}`.toLowerCase(),
     };
   }
 
@@ -97,6 +97,8 @@ async function notifyCollection(req, res) {
 
   console.log(`Watching ${collectionName}`);
 
+  const count = req.query.count;
+  let modified = 0;
   const pipeline = [{ $match: { 'ns.coll': collectionName } }];
   Model.watch(pipeline).on('change', (data) => {
     if (jsonResult.status === 408) {
@@ -104,6 +106,7 @@ async function notifyCollection(req, res) {
     }
     // eslint-disable-next-line no-underscore-dangle
     Model.findById(data.documentKey._id, (error, document) => {
+      modified += 1;
       jsonResult.operationType = data.operationType;
       jsonResult.ns = data.ns;
       jsonResult.status = 200;
@@ -116,7 +119,16 @@ async function notifyCollection(req, res) {
       }
 
       try {
-        res.status(200).send(jsonResult);
+        if (!count) {
+          console.log(`No longer observing ${collectionName}`);
+          res.status(200).send(jsonResult);
+        } else if (count && count == modified) {
+          console.log(`No longer observing ${collectionName}`);
+          res.status(200).send({
+            uri: jsonResult.uri,
+            result: 'operations completed',
+          });
+        }
       } catch (err) {
         console.log('Headers already sent to the client');
       }
