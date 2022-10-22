@@ -104,6 +104,9 @@ async function notifyCollection(req, res) {
     if (jsonResult.status === 408) {
       return;
     }
+    if (data.operationType === 'drop') {
+      return;
+    }
     // eslint-disable-next-line no-underscore-dangle
     Model.findById(data.documentKey._id, (error, document) => {
       modified += 1;
@@ -111,6 +114,7 @@ async function notifyCollection(req, res) {
       jsonResult.ns = data.ns;
       jsonResult.status = 200;
       if (data.updateDescription) {
+        console.log(data.updateDescription);
         jsonResult.updateDescription = data.updateDescription;
         jsonResult.document = document;
       }
