@@ -82,7 +82,7 @@ async function notifyCollection(req, res) {
   }
 
   const timeout = req.query.timeout;
-  if (timeout !== '-1') {
+  if (timeout && timeout !== '-1') {
     console.log(`Set timeout to ${timeout}`);
     res.setTimeout(parseInt(timeout, 10) * 1000, () => {
       console.log('Request has timed out');
