@@ -39,26 +39,30 @@ async function notifyDocument(req, res) {
 
   console.log(`Watching ${collectionName}`);
 
-  const pipeline = [{ $match: { 'ns.coll': collectionName } }];
-  Model.watch(pipeline).on('change', (data) => {
+  const modelEventEmitter = Model.watch();
+
+  modelEventEmitter.watch().on('change', (data) => {
     console.log(data);
-    if (jsonResult.status === 408) {
+    if (jsonResult.status == 408) {
       return;
     }
-    // eslint-disable-next-line no-underscore-dangle
-    Model.findById(data.documentKey._id, (error, document) => {
-      let key;
-      if (req.params.service === 'task') {
-        key = document.executionName;
-      } else if (req.params.service === 'object') {
-        key = document.objectName;
-      }
-      if (jsonResult.status !== 408 && key === req.params.documentName) {
-        jsonResult.status = 200;
-        console.log(jsonResult);
-        res.status(200).send(jsonResult);
-      }
-    });
+    if (data.operationType == 'replace' || data.operationType == 'update') {
+      // eslint-disable-next-line no-underscore-dangle
+      Model.findById(data.documentKey._id, (error, document) => {
+        let key;
+        if (req.params.service == 'task') {
+          key = document.executionName;
+        } else if (req.params.service == 'object') {
+          key = document.objectName;
+        }
+        if (jsonResult.status !== 408 && key === req.params.documentName) {
+          console.log(`No longer watching ${collectionName}`);
+          jsonResult.status = 200;
+          modelEventEmitter.close();
+          res.status(200).send(jsonResult);
+        }
+      });
+    }
   });
 }
 
@@ -99,43 +103,48 @@ async function notifyCollection(req, res) {
 
   const count = req.query.count;
   let modified = 0;
-  Model.watch().on('change', (data) => {
+
+  const modelEventEmitter = Model.watch();
+
+  modelEventEmitter.on('change', (data) => {
     if (jsonResult.status === 408) {
       return;
     }
-    if (data.operationType === 'drop') {
-      return;
-    }
-    // eslint-disable-next-line no-underscore-dangle
-    Model.findById(data.documentKey._id, (error, document) => {
-      modified += 1;
-      jsonResult.operationType = data.operationType;
-      jsonResult.ns = data.ns;
-      jsonResult.status = 200;
-      if (data.updateDescription) {
-        console.log(data.updateDescription);
-        jsonResult.updateDescription = data.updateDescription;
-        jsonResult.document = document;
-      }
-      if (data.fullDocument) {
-        jsonResult.document = data.fullDocument;
-      }
-
-      try {
-        if (!count) {
-          console.log(`No longer observing ${collectionName}`);
-          res.status(200).send(jsonResult);
-        } else if (count && count == modified) {
-          console.log(`No longer observing ${collectionName}`);
-          res.status(200).send({
-            uri: jsonResult.uri,
-            result: 'operations completed',
-          });
+    if (data.operationType == 'replace' || data.operationType == 'update') {
+      // eslint-disable-next-line no-underscore-dangle
+      Model.findById(data.documentKey._id, (error, document) => {
+        modified += 1;
+        jsonResult.operationType = data.operationType;
+        jsonResult.ns = data.ns;
+        jsonResult.status = 200;
+        if (data.updateDescription) {
+          console.log(data.updateDescription);
+          jsonResult.updateDescription = data.updateDescription;
+          jsonResult.document = document;
         }
-      } catch (err) {
-        console.log('Headers already sent to the client');
-      }
-    });
+        if (data.fullDocument) {
+          jsonResult.document = data.fullDocument;
+        }
+
+        try {
+          if (!count) {
+            console.log(`No longer watching ${collectionName}`);
+            modelEventEmitter.close();
+            res.status(200).send(jsonResult);
+          } else if (count && count == modified) {
+            console.log(`No longer watching ${collectionName}`);
+            modified = 0;
+            modelEventEmitter.close();
+            res.status(200).send({
+              uri: jsonResult.uri,
+              result: 'operations completed',
+            });
+          }
+        } catch (err) {
+          console.log('Headers already sent to the client');
+        }
+      });
+    }
   });
 }
 
