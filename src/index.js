@@ -7,7 +7,6 @@ const port = 4447;
 
 async function setupApp() {
   app.use(express.json());
-  app.use(express.bodyParser({ limit: '50mb' }));
 
   app.use('/api/anyJS/v1', routes);
 
