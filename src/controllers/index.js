@@ -110,7 +110,7 @@ async function notifyCollection(req, res) {
     if (jsonResult.status === 408) {
       return;
     }
-    if (data.operationType == 'replace' || data.operationType == 'update' || data.operationType == 'insert') {
+    if (data.operationType == 'replace' || data.operationType == 'update') {
       // eslint-disable-next-line no-underscore-dangle
       Model.findById(data.documentKey._id, (error, document) => {
         modified += 1;
