@@ -99,8 +99,7 @@ async function notifyCollection(req, res) {
 
   const count = req.query.count;
   let modified = 0;
-  const pipeline = [{ $match: { 'ns.coll': collectionName } }];
-  Model.watch(pipeline).on('change', (data) => {
+  Model.watch().on('change', (data) => {
     if (jsonResult.status === 408) {
       return;
     }
